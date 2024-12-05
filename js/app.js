@@ -117,3 +117,15 @@ else{
 }
 
 
+// Esperar a que el DOM se cargue completamente para agregar los event listeners 
+document.addEventListener('DOMContentLoaded', () => {
+    event.preventDefault();
+    // Manejar el evento de inicio de sesión 
+    const loguer = document.getElementById('iniciarSesion').addEventListener('click', function() { iniciarSesion();});
+    console.log(loguer);
+});
+
+
+function iniciarSesion(){
+    alert('hola');
+}
