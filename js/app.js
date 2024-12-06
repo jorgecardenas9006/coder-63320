@@ -124,24 +124,49 @@ else{
 
 // Esperar a que el DOM se cargue completamente para agregar los event listeners 
 document.addEventListener('DOMContentLoaded', () => {
-    event.preventDefault();
-    // Manejar el evento de inicio de sesión 
-    const loguer = document.getElementById('iniciarSesion').addEventListener('click', function(event){
-        event.preventDefault();
-        const loginUser = new Usuarios();
-        console.log(loginUser.login());
-        /*const correo = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        const usuario = new Usuarios();
-        const cuenta = usuario.login(correo, password);
-        if(cuenta){
-            login.push(cuenta);
-            localStorage.setItem('login', JSON.stringify(login));
-            window.location.reload();
-        }
-        else{
-            alert('Usuario o contraseña incorrectos');
-        }*/
+    //Validar que el boton de login exista
+    const loginButton = document.getElementById('iniciarSesion');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPassword = document.getElementById('loginPassword');
+
+    //al hacer focus en el input de email se cierra la alerta
+    loginEmail.addEventListener('focus', cerrarAlerta);
+    //al hacer focus en el input de password se cierra la alerta
+    loginPassword.addEventListener('focus', cerrarAlerta);
+
+     // Manejar el evento de inicio de sesión 
+    if(loginButton){
+        loginButton.addEventListener('click', function(event){
+            const loginUser = new Usuarios();
+            if(loginUser.login()){
+                event.preventDefault();
+                loginUser.setLogin();
+                //window.location.reload();
+            }
+            else{
+                event.preventDefault();
+                //crear alerta y agregarla abajo de iniciar sesion          
+                const alerta = crearAlerta('danger', 'Usuario o contraseña incorrectos');
+                loginButton.after(alerta);
+            }
+        });
     }
-    );
+    
+
 });
+
+const crearAlerta = (tipo, mensaje) => {
+    const alerta = document.createElement('div');
+    alerta.classList.add('alert', `alert-${tipo}`, 'mt-2');
+    alerta.id = 'alertaLogin';
+    alerta.innerHTML = mensaje;
+    return alerta;
+}
+
+const cerrarAlerta = () => {
+    const alerta = document.getElementById('alertaLogin');
+    if(alerta){
+        alerta.remove();
+    }
+}
+
