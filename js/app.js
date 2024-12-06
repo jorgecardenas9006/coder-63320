@@ -9,15 +9,11 @@ import cuentas from "../data/data.js";
 import Usuarios from "./Usuarios/Usuarios.js";
 /*import Cuentas from "./Cuentas/Cuentas.js"*/
 
-const login = [];
 
 //subir cuentas a localstorage
 localStorage.setItem('cuentas', JSON.stringify(cuentas));
-
-
-//setear el login en el localstorage
-localStorage.setItem('login', JSON.stringify(login));
-if(login.length === 0){
+const login = JSON.parse(localStorage.getItem('login'));
+if(login === null){
     //renderizar un boton de login
     const loginView = document.getElementById('root');
     loginView.innerHTML = ` 
@@ -129,17 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginEmail = document.getElementById('loginEmail');
     const loginPassword = document.getElementById('loginPassword');
 
-    //al hacer focus en el input de email se cierra la alerta
-    loginEmail.addEventListener('focus', cerrarAlerta);
-    //al hacer focus en el input de password se cierra la alerta
-    loginPassword.addEventListener('focus', cerrarAlerta);
-
      // Manejar el evento de inicio de sesión 
     if(loginButton){
+        //al hacer focus en el input de email se cierra la alerta
+        loginEmail.addEventListener('focus', cerrarAlerta);
+        //al hacer focus en el input de password se cierra la alerta
+        loginPassword.addEventListener('focus', cerrarAlerta);
+
         loginButton.addEventListener('click', function(event){
             const loginUser = new Usuarios();
             if(loginUser.login()){
-                event.preventDefault();
                 loginUser.setLogin();
                 //window.location.reload();
             }
