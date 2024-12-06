@@ -5,10 +5,15 @@ Version:      0.0.2
 Nombre proyecto:   cajero automatico javascript
 ===================================================================
 */
+import cuentas from "../data/data.js";
 import Usuarios from "./Usuarios/Usuarios.js";
 /*import Cuentas from "./Cuentas/Cuentas.js"*/
 
 const login = [];
+
+//subir cuentas a localstorage
+localStorage.setItem('cuentas', JSON.stringify(cuentas));
+
 
 //setear el login en el localstorage
 localStorage.setItem('login', JSON.stringify(login));
@@ -121,11 +126,22 @@ else{
 document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     // Manejar el evento de inicio de sesión 
-    const loguer = document.getElementById('iniciarSesion').addEventListener('click', function() { iniciarSesion();});
-    console.log(loguer);
+    const loguer = document.getElementById('iniciarSesion').addEventListener('click', function(event){
+        event.preventDefault();
+        const loginUser = new Usuarios();
+        console.log(loginUser.login());
+        /*const correo = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const usuario = new Usuarios();
+        const cuenta = usuario.login(correo, password);
+        if(cuenta){
+            login.push(cuenta);
+            localStorage.setItem('login', JSON.stringify(login));
+            window.location.reload();
+        }
+        else{
+            alert('Usuario o contraseña incorrectos');
+        }*/
+    }
+    );
 });
-
-
-function iniciarSesion(){
-    alert('hola');
-}

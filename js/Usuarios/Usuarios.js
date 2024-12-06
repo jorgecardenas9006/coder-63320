@@ -1,23 +1,25 @@
 // Importar archivo de datos (asegúrate de que data.js exporte un arreglo de usuarios)
-import cuentas from '../../data/data.js';
 
 export default class Usuarios {
     constructor() {
-        this._usuarios = cuentas; // Asegúrate de que data sea un arreglo de usuarios [{ usuario, senha }]
         this.correo = document.getElementById('loginEmail').value;
         this.password = document.getElementById('loginPassword').value;
     }
-
-    // Método para iniciar sesión
+    mostrarUsuarios() {
+        console.log(this.correo);
+        console.log(this.password);
+    }
+    //buscar usuario en el localstorage
     login() {
-        let usuario = this._usuarios.find(user => user.correo === this.correo);
-        if (usuario) {
-            if (usuario.password === this.password) {
+        const usuarios = JSON.parse(localStorage.getItem('cuentas'));
+        for (let i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].email === this.correo && usuarios[i].password === this.password) {
                 return true;
             }
         }
         return false;
     }
+
 
 
 }
