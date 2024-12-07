@@ -1,0 +1,21 @@
+body {
+    background: linear-gradient(135deg, #8e44ad, #3498db); /* Degradado en diagonal */
+    background-attachment: fixed; /* Fija el fondo al hacer scroll */
+    color: #ffffff; /* Color de texto para contraste */
+    font-family: 'Arial', sans-serif; /* Fuente elegante */
+    margin: 0;
+    padding: 0;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/white-diamond.png'); /* Textura */
+    opacity: 0.2; /* Hace la textura sutil */
+    z-index: -1; /* Asegura que esté detrás del contenido */
+  }
+  
