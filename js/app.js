@@ -96,9 +96,9 @@ else{
                 <h1 class="text-center">Bienvenido al cajero automatico</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col">
-                <div class="card">
+                <div class="card align-items-center">
                     <div class="card-body">
                         <h5 class="card-title
                         ">Bienvenido ${login[0].correo}</h5>
@@ -189,14 +189,14 @@ if(consultarSaldo){
 
 const retirarDinero = document.getElementById('retirar');
 if(retirarDinero){
-    const buttonFinalRetirarDinero = document.getElementById('retirarDinero');
     retirarDinero.addEventListener('click', function(){
         const buttonFinalRetirarDinero = document.getElementById('retirarDinero');
         if(buttonFinalRetirarDinero == null){
             const saldoRetirar = document.createElement('div')
+            saldoRetirar.classList.add('container')
             saldoRetirar.innerHTML = `
             <div class="input-group mt-3">
-                <button class="btn btn-outline-secondary" type="button" id="retirarDinero">Retirar</button>
+                <button class="btn btn-outline-secondary" type="submit" id="retirarDinero">Retirar</button>
                 <span class="input-group-text">$</span>
                 <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
                 <span class="input-group-text">.00</span>
@@ -204,6 +204,12 @@ if(retirarDinero){
             <div class="form-text" id="basic-addon4">Digite el saldo a retirar.</div>
             `
             loginView.appendChild(saldoRetirar)
+            const retirarDineroFinal = document.getElementById('retirarDinero');
+            retirarDineroFinal.addEventListener('click', function(){
+                const valorRetiro = document.querySelector('.form-control').value;
+                console.log(valorRetiro);
+                cuenta.retirarDinero(login[0].correo, valorRetiro);
+            });
         }
     })
 }
