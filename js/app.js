@@ -5,32 +5,39 @@ Version:      0.0.2
 Nombre proyecto:   cajero automatico javascript
 ===================================================================
 */
-import cuentas from "../data/data.js";
+import { cuentas, saveCuentasLocalStorage} from "../data/data.js";
 import Usuarios from "./Usuarios/Usuarios.js";
 import Cuentas from "./Cuentas/Cuentas.js";
 
 
+
 //subir cuentas a localstorage
-localStorage.setItem('cuentas', JSON.stringify(cuentas));
+cuentas().then(data => {
+    saveCuentasLocalStorage(data);
+});
+
 const login = JSON.parse(localStorage.getItem('login'));
 const loginView = document.getElementById('root');
 if(login === null){
     //renderizar el login
     loginView.innerHTML = ` 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 class="text-center">Bienvenido al cajero automatico</h1>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div>
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center">Bienvenido al cajero automático</h1>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="d-flex justify-content-center align-items-center col">
-                <button class="btn btn-primary" id="login" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar sesión</button>
-                <div class="mx-2"></div>
-                <button class="btn btn-primary" id="register" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</button>
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center col">
+                    <button class="btn btn-primary" id="login" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar sesión</button>
+                    <div class="mx-2"></div>
+                    <button class="btn btn-primary" id="register" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</button>
+                </div>
             </div>
         </div>
     </div>
+
     
     <!-- Modal Iniciar Sesión -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -198,17 +205,34 @@ if(retirarDinero){
             <div class="input-group mt-3">
                 <button class="btn btn-outline-secondary" type="submit" id="retirarDinero">Retirar</button>
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="retirarDineroInfo">
                 <span class="input-group-text">.00</span>
             </div>
             <div class="form-text" id="basic-addon4">Digite el saldo a retirar.</div>
             `
             loginView.appendChild(saldoRetirar)
             const retirarDineroFinal = document.getElementById('retirarDinero');
-            retirarDineroFinal.addEventListener('click', function(){
-                const valorRetiro = document.querySelector('.form-control').value;
-                console.log(valorRetiro);
-                cuenta.retirarDinero(login[0].correo, valorRetiro);
+            retirarDineroFinal.addEventListener('click', async function(){
+                const infoRetiro = document.getElementById('retirarDineroInfo').value;
+                //sweetalert2 para confirmar el retiro
+                const { value: accept } = await Swal.fire({
+                    title: "Retiro de dinero",
+                    input: "checkbox",
+                    inputValue: 1,
+                    inputPlaceholder: `
+                      Desea retirar ${infoRetiro}
+                    `,
+                    confirmButtonText: `
+                      Continue&nbsp;<i class="fa fa-arrow-right"></i>
+                    `,
+                    inputValidator: (result) => {
+                      return !result && "You need to agree with T&C";
+                    }
+                  });
+                  if (accept) {
+                    const valorRetiro = document.querySelector('.form-control').value;
+                    cuenta.retirarDinero(login[0].correo, valorRetiro);
+                  }
             });
         }
     })
