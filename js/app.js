@@ -226,7 +226,7 @@ if(retirarDinero){
                       Continue&nbsp;<i class="fa fa-arrow-right"></i>
                     `,
                     inputValidator: (result) => {
-                      return !result && "You need to agree with T&C";
+                      return !result && "Es necesario confirmar el retiro";
                     }
                   });
                   if (accept) {
